@@ -1,0 +1,3 @@
+[submodule "manifests/ossec"]
+	path = manifests/ossec
+	url = https://github.com/deadpoint/ossec
