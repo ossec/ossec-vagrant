@@ -28,6 +28,7 @@ package { $ossec_packages:
   ensure => "installed"
 }
 
+
 tarball { "ossec-hids.tar.gz":
   module_name => "ossec-hids",
   install_dir => "/tmp/ossec-hids",
@@ -42,7 +43,7 @@ tarball { "ossec-hids.tar.gz":
 
 file { "preloaded-vars.conf":
   path => "/tmp/ossec-hids/etc/preloaded-vars.conf",
-  source => "/vagrant/${ossec_type}-preloaded-vars.conf",
+  source => "/vagrant/etc/${ossec_type}-preloaded-vars.conf",
   notify => Exec["install.sh"],
   require => Tarball["ossec-hids.tar.gz"],
 }
@@ -55,6 +56,30 @@ exec { "install.sh":
       package["make"],
       package["gcc"],
     ]
+}
+
+service { "ossec":
+  ensure  => "running",
+  require => Exec["install.sh"],
+}
+
+if $ossec_type == "master" {
+    file { "client.keys":
+      path => "/var/ossec/etc/client.keys",
+      source => "/vagrant/etc/master.client.keys",
+      require => Exec["install.sh"],
+      notify => Service["ossec"],
+      owner => root, 
+      group => ossec, 
+      mode => 440, 
+    }
+} else {
+    file { "client.keys":
+        path => "/var/ossec/etc/client.keys",
+        source => "/vagrant/etc/${ossec_agent_id}.client.keys",
+        require => Exec["install.sh"],
+        notify  => Service["ossec"]
+    }
 }
 
 

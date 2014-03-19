@@ -5,15 +5,15 @@ Vagrant.configure("2") do |config|
   
   #config.vm.provision "shell", inline: "sudo bash -x /vagrant/setup-host.sh"
 
-  config.vm.define "ossec_master" do |ossec_master|
-    ossec_master.vm.box = "hashicorp/precise32"
-    ossec_master.vm.hostname = "master"
-    ossec_master.vm.network :private_network, ip: "172.17.2.10"
-    #ossec_master.vm.provision "shell", inline: "sudo bash -x /vagrant/setup-host.sh master"
-    ossec_master.vm.provision "puppet" do |puppet|
+  config.vm.define "master" do |master|
+    master.vm.box = "hashicorp/precise32"
+    master.vm.hostname = "master"
+    master.vm.network :private_network, ip: "172.17.2.10"
+    #master.vm.provision "shell", inline: "sudo bash -x /vagrant/setup-host.sh master"
+    master.vm.provision "puppet" do |puppet|
       puppet.facter = {
         "vagrant" => "1",
-        "ossec_type" => "master"
+        "ossec_type" => "master",
       }
     end
   end
@@ -26,7 +26,8 @@ Vagrant.configure("2") do |config|
     agent_precise32.vm.provision "puppet" do |puppet|
       puppet.facter = {
         "vagrant" => "1",
-        "ossec_type" => "master"
+        "ossec_type" => "agent",
+        "ossec_agent_id" => "001",
       }
     end
   end
