@@ -1,5 +1,8 @@
+
+
+
 Vagrant.configure("2") do |config|
-  config.vm.provision "shell", inline: "echo Hello"
+  config.vm.provision "shell", inline: "sudo bash -x /vagrant/setup-host.sh"
 
   config.vm.define "ossec_master" do |ossec_master|
     ossec_master.vm.box = "hashicorp/precise32"
