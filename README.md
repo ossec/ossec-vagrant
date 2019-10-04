@@ -1,4 +1,4 @@
-## OSSEC vagrant testing and devel setup
+## OSSEC vagrant testing and devel setup:
 
 *NOT FOR PRODUCTION*  
 
@@ -8,7 +8,7 @@ agent.
 
 *NOT FOR PRODUCTION* 
 
-### Requirements
+### Requirements:
 
 * GNU Make
 * vagrant 
